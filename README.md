@@ -6,16 +6,25 @@ Self-Driving Car Engineer Nanodegree Program
 ## Describe the effect each of the P, I, D components had in your implementation
 
 ### P component
-Controls how much to steer. When too hight it results in oscillation because of quick steering. When too low tha car is not able to go throught the sharp turns.
+Is proportional to the cross-track error and controls how much to steer to the middle of the road.
+Low P value - results in slow changes in the the steering and tha car is not able to go throught the sharp turns because of this small output response.
+Hight P value - results in big change of the controll parametr and makes the driving of the vehicle unstable
 
 ### I component
-Helps the vehicl keep closer to desired middle of the track. Whe set to yero, the vehicle is little bit shifted from the middle of the road.
+The contribution from the integral term is proportional to both the magnitude of the error and the duration of the error. The integral in a PID controller is the sum of the instantaneous error over time and gives the accumulated offset that should have been corrected previously. The accumulated error is then multiplied by the integral gain (Ki) and added to the controller output.
+Helps the vehicle keep closer to desired middle of the track. When set to zero, the vehicle is little bit shifted from the middle of the road.
+Hight I gain - vehicle is unstable
+Low I gain - it takes too long to get to the middle of the road
 
 ### D component
-This component helps to stabilize P component in long term and reduce the oscillation cause by the P component.
+The derivative of the process error is calculated by determining the slope of the error over time and multiplying this rate of change by the derivative gain Kd. 
+It aims at flattening the error trajectory into a horizontal line, damping the force applied, and so reduces overshoot. This component helps to stabilize P component in long term and reduce the oscillation cause by the P component.
+Low D gain results in underdamped - vehicle still oscillates
+High D gain results in overdamped - long time to correct the offset from the middle of the road
+When set correctly the system is critically-damped.
 
 ## Describe how the final hyperparameters were chosen
-I have followed the [youtube video instructions](https://www.youtube.com/watch?v=YamBuzDjrs8). SO than I decided to manually tune the PID parameters. 
+I have followed the [youtube video instructions](https://www.youtube.com/watch?v=YamBuzDjrs8). So than I decided to manually tune the PID parameters. 
 At first I have set all the P, I, D weights to zeroes. Than I have increased the P weight until I've got a reasonable
 good oscillation of the vehicle. Than I added the D weight. I started will low values which resulted in oscillation after some time. So I started to increase this value and tuning the P weight as well.
 When I set the D weight too hight, it started oscillation at begining. So I had to fine some good combination of P and D values. With I weight still set to yero it was working pretty good, but the vehicle was not in the middle.
